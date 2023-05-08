@@ -1,0 +1,116 @@
+<app-menu></app-menu>
+<div class="p-6 bg-slate-900">
+  <div class="flex justify-end"></div>
+  <div class="flex justify-between mt-4 gap-2">
+    <div class="flex gap-2">
+      <div>
+        <select class="select w-full max-w-xs" (change)="onChangeMonth($event)">
+          <option
+            *ngFor="let item of months"
+            [selected]="item.id === month.id"
+            value="{{ item.id }}"
+          >
+            {{ item.value }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <select class="select w-full max-w-xs" (change)="onChangeWallet()">
+          <option *ngFor="let item of years" [selected]="item === year">{{item}}</option>
+        </select>
+      </div>
+
+      <div>
+        <select class="select w-full max-w-xs" [(ngModel)]="wallet" (change)="onChangeWallet()">
+          <option selected value="-1">Todos</option>
+          <option
+          *ngFor="let item of wallets"
+          [selected]="item.id === wallet"
+          value="{{ item.id }}"
+        >
+          {{ item.name }}
+        </option>
+        </select>
+      </div>
+
+      <div>
+        <select class="select w-full max-w-xs" [(ngModel)]="category" (change)="onChangeCategory()">
+          <option selected value="-1">Todos</option>
+          <option
+          *ngFor="let item of categories"
+          value="{{ item.id }}"
+        >
+          {{ item.name }}
+        </option>
+        </select>
+      </div>
+    </div>
+    <button
+      class="btn btn-primary flex"
+      [routerLink]="['new']"
+      routerLinkActive="router-link-active"
+    >
+      Nova Transacao
+    </button>
+  </div>
+
+  <div class="flex mt-8 gap-4">
+    <div class="stats text-primary-content">
+      <div class="stat">
+        <div class="stat-title">Account Input</div>
+        <div class="stat-value">{{ accountInput | currency : "BRL" }}</div>
+      </div>
+    </div>
+
+    <div class="stats text-red">
+      <div class="stat">
+        <div class="stat-title">Account Output</div>
+        <div class="stat-value text-red-400">
+          {{ accountOutput | currency : "BRL" }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto mt-6">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Wallet</th>
+          <th>Data</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of transactions">
+          <th>{{ item.id }}</th>
+          <td>{{ item.description }}</td>
+          <td>{{ item.amount | currency : "BRL" }}</td>
+          <td>{{ item.category_name }}</td>
+          <th>{{ item.wallet_name}}</th>
+          <td>{{ item.transaction_at }}</td>
+          <td class="flex gap-3">
+            <button
+              [swal]="{title: 'Do you really want to remove this register?', showCancelButton: true}"
+              class="btn btn-circle btn-error"
+              (confirm)="handleDeleteTransaction($event, item.id)"
+            >
+              X
+            </button>
+
+            <button
+            class="btn btn-circle btn-accent"
+            [routerLink]="[item.id, 'edit']"
+          >
+            Edit
+          </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

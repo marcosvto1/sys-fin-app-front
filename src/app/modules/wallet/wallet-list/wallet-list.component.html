@@ -1,0 +1,39 @@
+<app-menu></app-menu>
+<div class="p-6 bg-slate-900 max-h-full">
+  <div class="flex justify-between align-middle">
+    <h1 class="text-2xl font-bold mt-2">Wallets</h1>
+    <button
+    class="btn btn-primary flex"
+    [routerLink]="['new']"
+    routerLinkActive="router-link-active"
+  >
+    New Wallet
+  </button>
+  </div>
+
+  <div class="overflow-x-auto mt-6">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of wallets">
+          <th>{{item.id}}</th>
+          <td>{{item.name}}</td>
+          <td>{{item.amount | currency: 'BRL'}}</td>
+          <td class="flex gap-2">
+            <button class="btn btn-error btn-circle">X</button>
+            <button class="btn btn-accent btn-circle" [routerLink]="[item.id, 'edit']"
+            routerLinkActive="router-link-active">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -1,0 +1,121 @@
+<app-menu></app-menu>
+<div class="p-8 flex justify-center">
+  <div class="card w-auto bg-base-300 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">Register Transaction!</h2>
+      <form [formGroup]="form" (submit)="onSubmit()">
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Description</span>
+          </label>
+          <input
+            type="text"
+            placeholder=""
+            formControlName="description"
+            class="input input-bordered w-full max-w-xs"
+          />
+          <div class="text-red-400 mt-1" *ngIf="showFieldError('description')">
+            <div *ngIf="form.get('description')?.errors?.['required']">
+              Description is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Wallet</span>
+          </label>
+
+          <select class="select w-full max-w-xs" formControlName="wallet_id" >
+            <option disabled selected>Selecione</option>
+            <option
+              *ngFor="let item of wallets"
+                    value="{{ item.id }}"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+          <div class="text-red-400 mt-1" *ngIf="showFieldError('wallet_id')">
+            <div *ngIf="form.get('wallet_id')?.errors?.['required']">
+              Wallet is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Category</span>
+          </label>
+
+          <select class="select w-full max-w-xs" formControlName="category_id" >
+            <option disabled selected>Selecione</option>
+            <option
+              *ngFor="let item of categories"
+                    value="{{ item.id }}"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+          <div class="text-red-400 mt-1" *ngIf="showFieldError('category_id')">
+            <div *ngIf="form.get('category_id')?.errors?.['required']">
+              Category is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Transaction Date</span>
+          </label>
+          <input
+            type="date"
+            formControlName="transaction_at"
+            class="input input-bordered w-full max-w-xs"
+          />
+          <div class="text-red-400 mt-1" *ngIf="showFieldError('transaction_at')">
+            <div *ngIf="form.get('transaction_at')?.errors?.['required']">
+              Date is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Amount</span>
+          </label>
+          <input
+            type="text"
+            placeholder=""
+            formControlName="amount"
+            currencyMask
+            class="input input-bordered w-full max-w-xs"
+          />
+          <div class="text-red-400 mt-1" *ngIf="showFieldError('amount')">
+            <div *ngIf="form.get('amount')?.errors?.['required']">
+              Amount is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control w-full max-w-xs mt-2">
+          <label class="label cursor-pointer">
+            <span class="label-text">Input</span>
+            <input type="radio" name="transaction_type" value="input" formControlName="transaction_type" class="radio checked:bg-green-500" />
+          </label>
+        </div>
+
+        <div class="form-control w-full max-w-xs mb-1">
+          <label class="label cursor-pointer">
+            <span class="label-text">Output</span>
+            <input type="radio" name="transaction_type"  value="output" formControlName="transaction_type" class="radio checked:bg-red-500" />
+          </label>
+        </div>
+
+        <div class="mt-6">
+          <button class="btn btn-primary w-full" [disabled]="form.invalid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
