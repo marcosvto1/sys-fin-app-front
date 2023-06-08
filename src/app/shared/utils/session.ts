@@ -1,11 +1,18 @@
 export class Session {
   static setSession(data: any) {
-    localStorage.setItem("session", data)
+    localStorage.setItem("session", JSON.stringify(data))
   }
 
-  static getSession(data: any) {
-    data = localStorage.getItem('session')
+  static getSession() {
+    const data = localStorage.getItem('session')
+    if (data) {
+      return JSON.parse(data)
+    }
     return data;
+  }
+
+  static clear() {
+    localStorage.removeItem('session')
   }
 
 }

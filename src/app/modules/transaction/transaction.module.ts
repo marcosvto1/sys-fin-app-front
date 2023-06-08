@@ -8,6 +8,7 @@ import { TransactionFormComponent } from './transaction-form/transaction-form.co
 import { SharedModule } from '../../shared/shared.module';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { JwtInterceptor } from '../../shared/jwt.interceptor';
 
 const routes: Routes = [
   { path: '', component: TransactionListComponent },
@@ -26,5 +27,6 @@ const routes: Routes = [
     SweetAlert2Module,
     NgxCurrencyModule,
   ],
+  providers: [JwtInterceptor]
 })
 export class TransactionModule {}

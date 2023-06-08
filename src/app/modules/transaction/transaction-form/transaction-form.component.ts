@@ -158,7 +158,7 @@ export class TransactionFormComponent {
             this.router.navigate(['/transactions']);
           },
           error: (err) => {
-            toastr.error('faild to updated transaction');
+            toastr.error('failed to updated transaction');
           },
         });
     } else {

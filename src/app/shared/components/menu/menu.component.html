@@ -1,21 +1,21 @@
 <div class="navbar bg-base-300">
   <div class="flex-1">
-    <a class="btn btn-ghost normal-case text-xl" routerLink="/transactions" >MyFin</a>
+    <a class="btn btn-ghost normal-case text-xl" routerLink="/admin/transactions" >MyFin</a>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
-      <li><a routerLink="/transactions" >Transactions</a></li>
+      <li><a routerLink="/admin/transactions" >Transactions</a></li>
       <li tabindex="0">
         <a >
           Maintainers
           <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
         </a>
         <ul class="p-2 bg-base-100">
-          <li><a routerLink="/categories">Categorias</a></li>
-          <li><a routerLink="/wallets"  >Wallets</a></li>
+          <li><a routerLink="/admin/categories">Categorias</a></li>
+          <li><a routerLink="/admin/wallets"  >Wallets</a></li>
         </ul>
       </li>
-      <li><a>Sair</a></li>
+      <li (click)="logout()"><a>Sair</a></li>
     </ul>
   </div>
 </div>

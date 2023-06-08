@@ -48,7 +48,7 @@ export class LoginFormComponent implements OnInit {
     this.loginService.login(this.form.getRawValue()).subscribe({
       next: (v) => {
         toastr.success('login successfuly')
-        this.router.navigateByUrl("/transactions")
+        this.router.navigateByUrl("/admin/transactions")
       },
       error: (err) => {
         toastr.error('Server not respond, try againg!!')
