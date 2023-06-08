@@ -2,7 +2,6 @@ import { IWallet } from './../../wallet/wallet.interface';
 import { Component } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -155,7 +154,7 @@ export class TransactionFormComponent {
         .subscribe({
           next: (result) => {
             toastr.success('Transaction updated with success');
-            this.router.navigate(['/transactions']);
+            this.router.navigate(['/admin/transactions']);
           },
           error: (err) => {
             toastr.error('failed to updated transaction');
@@ -169,10 +168,10 @@ export class TransactionFormComponent {
         .subscribe({
           next: (result) => {
             toastr.success('Transaction created with success');
-            this.router.navigate(['/transactions']);
+            this.router.navigate(['/admin/transactions']);
           },
           error: (err) => {
-            toastr.error('faild to create transaction');
+            toastr.error('failed to create transaction');
           },
         });
     }
