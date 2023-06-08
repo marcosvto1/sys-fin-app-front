@@ -16,32 +16,39 @@
       </div>
       <div>
         <select class="select w-full max-w-xs" (change)="onChangeWallet()">
-          <option *ngFor="let item of years" [selected]="item === year">{{item}}</option>
+          <option *ngFor="let item of years" [selected]="item === year">
+            {{ item }}
+          </option>
         </select>
       </div>
 
       <div>
-        <select class="select w-full max-w-xs" [(ngModel)]="wallet" (change)="onChangeWallet()">
+        <select
+          class="select w-full max-w-xs"
+          [(ngModel)]="wallet"
+          (change)="onChangeWallet()"
+        >
           <option selected value="-1">Todos</option>
           <option
-          *ngFor="let item of wallets"
-          [selected]="item.id === wallet"
-          value="{{ item.id }}"
-        >
-          {{ item.name }}
-        </option>
+            *ngFor="let item of wallets"
+            [selected]="item.id === wallet"
+            value="{{ item.id }}"
+          >
+            {{ item.name }}
+          </option>
         </select>
       </div>
 
       <div>
-        <select class="select w-full max-w-xs" [(ngModel)]="category" (change)="onChangeCategory()">
-          <option selected value="-1">Todos</option>
-          <option
-          *ngFor="let item of categories"
-          value="{{ item.id }}"
+        <select
+          class="select w-full max-w-xs"
+          [(ngModel)]="category"
+          (change)="onChangeCategory()"
         >
-          {{ item.name }}
-        </option>
+          <option selected value="-1">Todos</option>
+          <option *ngFor="let item of categories" value="{{ item.id }}">
+            {{ item.name }}
+          </option>
         </select>
       </div>
     </div>
@@ -54,23 +61,73 @@
     </button>
   </div>
 
-  <div class="flex mt-8 gap-4">
-    <div class="stats text-primary-content">
-      <div class="stat">
-        <div class="stat-title">Account Input</div>
-        <div class="stat-value">{{ accountInput | currency : "BRL" }}</div>
+  <div class="flex mt-8 gap-4 justify-around">
+    <div class="flex gap-4">
+      <div class="stats text-primary-content">
+        <div class="stat">
+          <div class="stat-title">Balance Total Input</div>
+          <div class="stat-value">
+            {{ balanceTotalInput | currency : "BRL" }}
+          </div>
+        </div>
+      </div>
+
+      <div class="stats text-red">
+        <div class="stat">
+          <div class="stat-title">Balance Total Output</div>
+          <div class="stat-value text-red-400">
+            {{ balanceTotalOutput | currency : "BRL" }}
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="stats text-red">
-      <div class="stat">
-        <div class="stat-title">Account Output</div>
-        <div class="stat-value text-red-400">
-          {{ accountOutput | currency : "BRL" }}
+    <div class="divider lg:divider-horizontal"></div>
+
+    <div class="flex gap-4">
+      <div class="stats text-primary-content">
+        <div class="stat">
+          <div class="stat-title">Balance Paid Input</div>
+          <div class="stat-value">
+            {{ balancePaidInput | currency : "BRL" }}
+          </div>
+        </div>
+      </div>
+
+      <div class="stats text-red">
+        <div class="stat">
+          <div class="stat-title">Balance Paid Output</div>
+          <div class="stat-value text-red-400">
+            {{ balancePaidOutput | currency : "BRL" }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider lg:divider-horizontal"></div>
+
+    <div class="flex gap-4">
+      <div class="stats text-primary-content">
+        <div class="stat">
+          <div class="stat-title">Balance Unpaid Input</div>
+          <div class="stat-value">
+            {{ balanceUnpaidInput | currency : "BRL" }}
+          </div>
+        </div>
+      </div>
+
+      <div class="stats text-red">
+        <div class="stat">
+          <div class="stat-title">Balance Unpaid Output</div>
+          <div class="stat-value text-red-400">
+            {{ balanceUnpaidOutput | currency : "BRL" }}
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="divider lg:divider-horizontal"></div>
 
   <div class="overflow-x-auto mt-6">
     <table class="table table-zebra w-full">
@@ -79,6 +136,7 @@
           <th></th>
           <th>Description</th>
           <th>Amount</th>
+          <th>Paid</th>
           <th>Category</th>
           <th>Wallet</th>
           <th>Data</th>
@@ -89,13 +147,24 @@
         <tr *ngFor="let item of transactions">
           <th>{{ item.id }}</th>
           <td>{{ item.description }}</td>
+          <td>
+            <div [ngSwitch]="item.paid">
+              <div *ngSwitchCase="true" class="badge badge-primary">Pago</div>
+              <div *ngSwitchDefault class="badge badge-warning">
+                Aguardando Pagamento
+              </div>
+            </div>
+          </td>
           <td>{{ item.amount | currency : "BRL" }}</td>
           <td>{{ item.category_name }}</td>
-          <th>{{ item.wallet_name}}</th>
+          <th>{{ item.wallet_name }}</th>
           <td>{{ item.transaction_at }}</td>
           <td class="flex gap-3">
             <button
-              [swal]="{title: 'Do you really want to remove this register?', showCancelButton: true}"
+              [swal]="{
+                title: 'Do you really want to remove this register?',
+                showCancelButton: true
+              }"
               class="btn btn-circle btn-error"
               (confirm)="handleDeleteTransaction($event, item.id)"
             >
@@ -103,11 +172,11 @@
             </button>
 
             <button
-            class="btn btn-circle btn-accent"
-            [routerLink]="[item.id, 'edit']"
-          >
-            Edit
-          </button>
+              class="btn btn-circle btn-accent"
+              [routerLink]="[item.id, 'edit']"
+            >
+              Edit
+            </button>
           </td>
         </tr>
       </tbody>

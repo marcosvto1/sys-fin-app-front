@@ -6,6 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './../../shared/shared.module';
 import { WalletListComponent } from './wallet-list/wallet-list.component';
 import { WalletFormComponent } from './wallet-form/wallet-form.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 const routes: Routes = [
   {
@@ -29,6 +31,8 @@ const routes: Routes = [
     FormsModule,
     SharedModule,
     CommonModule,
+    SweetAlert2Module,
+    NgxCurrencyModule,
     RouterModule.forChild(routes),
   ],
 })

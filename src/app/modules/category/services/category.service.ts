@@ -13,4 +13,8 @@ export class CategoryService {
   getAll() {
     return this.http.get<ICategory[]>(`${environment.url}/api/v1/categories`)
   }
+
+  create(category: ICategory) {
+    return this.http.post<ICategory>(`${environment.url}/api/v1/categories`, category)
+  }
 }

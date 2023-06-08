@@ -44,8 +44,13 @@ export class TransactionListComponent implements OnInit {
   wallets: IWallet[] = []
   wallet: string = "-1"
 
-  accountInput = 0;
-  accountOutput = 0;
+  balanceTotalInput = 0;
+  balanceUnpaidInput = 0
+  balancePaidInput = 0;
+
+  balanceTotalOutput = 0;
+  balanceUnpaidOutput = 0;
+  balancePaidOutput = 0;
 
   constructor(private readonly transactionService: TransactionService,
     private readonly walletsServices: WalletService,
@@ -132,26 +137,49 @@ export class TransactionListComponent implements OnInit {
   }
 
   setStats() {
-    this.accountInput = 0
-    this.accountOutput = 0
+    this.balanceTotalInput = 0
+    this.balanceTotalOutput = 0
+    this.balancePaidInput = 0
+    this.balancePaidOutput = 0
+    this.balanceUnpaidInput = 0
+    this.balanceUnpaidOutput = 0
+
     const stats = this.transactions.reduce(
       (acc, item) => {
         if (item.transaction_type == 'input') {
-          acc['input'] += item.amount;
+          acc['blcTotalInput'] += item.amount;
+          if (item.paid) {
+            acc.blcPaidInput += item.amount;
+          } else {
+            acc.blcUnpaidInput += item.amount;
+          }
         } else {
-          acc['output'] += item.amount;
+          acc['blcTotalOutput'] += item.amount;
+          if (item.paid) {
+            acc.blcPaidOutput += item.amount;
+          } else {
+            acc.blcUnpaidOuput += item.amount;
+          }
         }
 
         return acc;
       },
       {
-        input: 0,
-        output: 0,
+        blcTotalInput: 0,
+        blcTotalOutput: 0,
+        blcPaidInput: 0,
+        blcPaidOutput: 0,
+        blcUnpaidInput: 0,
+        blcUnpaidOuput: 0
       }
     );
 
-    this.accountInput = stats.input
-    this.accountOutput = stats.output
+    this.balanceTotalInput = stats.blcTotalInput
+    this.balanceTotalOutput = stats.blcTotalOutput
+    this.balancePaidInput = stats.blcPaidInput
+    this.balancePaidOutput = stats.blcPaidOutput
+    this.balanceUnpaidInput = stats.blcUnpaidInput
+    this.balanceUnpaidOutput = stats.blcUnpaidOuput
   }
 
   handleDeleteTransaction(event: any, id: string) {

@@ -64,7 +64,7 @@
           </div>
         </div>
 
-        <div class="form-control w-full max-w-xs">
+        <!-- <div class="form-control w-full max-w-xs">
           <label class="label">
             <span class="label-text">Transaction Date</span>
           </label>
@@ -78,6 +78,22 @@
               Date is required
             </div>
           </div>
+        </div> -->
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Referencial Month</span>
+          </label>
+
+          <select class="select select-bordered" formControlName="month">
+            <option
+              *ngFor="let item of months"
+              value="{{ item.id }}"
+            >
+              {{ item.value }}
+            </option>
+          </select>
+
         </div>
 
         <div class="form-control w-full max-w-xs">
@@ -98,6 +114,8 @@
           </div>
         </div>
 
+
+
         <div class="form-control w-full max-w-xs mt-2">
           <label class="label cursor-pointer">
             <span class="label-text">Input</span>
@@ -109,6 +127,13 @@
           <label class="label cursor-pointer">
             <span class="label-text">Output</span>
             <input type="radio" name="transaction_type"  value="output" formControlName="transaction_type" class="radio checked:bg-red-500" />
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer">
+            <span class="label-text">Pago?</span>
+            <input type="checkbox" class="toggle toggle-primary" formControlName="paid" />
           </label>
         </div>
 

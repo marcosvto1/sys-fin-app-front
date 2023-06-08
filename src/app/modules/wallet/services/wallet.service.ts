@@ -13,4 +13,8 @@ export class WalletService {
   getAll() {
     return this.http.get<IWallet[]>(`${environment.url}/api/v1/wallets`)
   }
+
+  create(category: IWallet) {
+    return this.http.post<IWallet>(`${environment.url}/api/v1/wallets`, category)
+  }
 }

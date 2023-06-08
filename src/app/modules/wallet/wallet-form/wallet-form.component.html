@@ -1,2 +1,45 @@
 <app-menu></app-menu>
-<p>wallet-form works!</p>
+<div class="p-8 flex justify-center">
+  <div class="card w-auto bg-base-300 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">Register Wallet!</h2>
+      <form [formGroup]="form" (submit)="onSubmit()">
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Name</span>
+          </label>
+          <input
+            type="text"
+            placeholder=""
+            formControlName="name"
+            class="input input-bordered w-full max-w-xs"
+          />
+          <div class="text-red-400 mt-1" *ngIf="showFieldError('name')">
+            <div *ngIf="form.get('name')?.errors?.['required']">
+              Name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Amount</span>
+          </label>
+          <input
+            type="text"
+            placeholder=""
+            formControlName="amount"
+            currencyMask
+            class="input input-bordered w-full max-w-xs"
+          />
+          <div class="text-red-400 mt-1" *ngIf="showFieldError('amount')">
+            <div *ngIf="form.get('amount')?.errors?.['required']">
+              Amount is required
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

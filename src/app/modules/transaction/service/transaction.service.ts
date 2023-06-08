@@ -6,7 +6,6 @@ import { environment } from './../../../../environments/environment';
 import { map } from "rxjs";
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -31,10 +30,14 @@ export class TransactionService {
   }
 
   create(data: ITransaction) {
-    return this.http.post<ITransaction>('http://localhost:8000/api/v1/transactions', data)
+    return this.http.post<ITransaction>(`${environment.url}/api/v1/transactions`, data)
   }
 
-  delete(id: string) {
-    return this.http.delete(`http://localhost:8000/api/v1/transactions/${id}`)
+  update(transactionId: number, data: ITransaction) {
+    return this.http.put<ITransaction>(`${environment.url}/api/v1/transactions/${transactionId}`, data)
+  }
+
+  delete(transactionId: string) {
+    return this.http.delete(`${environment.url}/api/v1/transactions/${transactionId}`)
   }
 }

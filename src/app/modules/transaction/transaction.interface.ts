@@ -8,6 +8,7 @@ export interface ITransaction {
   transaction_at: string;
   wallet_id: number;
   wallet_name: string
+  paid: boolean
 }
 
 

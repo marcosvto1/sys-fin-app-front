@@ -11,7 +11,7 @@ export class LoginService {
   constructor(private readonly http: HttpClient) {}
 
   login(login: { email: string; password: string }) {
-    return this.http.post<{access_token: string}>(`${environment.url}/auth/access_token}`, login).pipe(
+    return this.http.post<{access_token: string}>(`${environment.url}/auth/access_token`, login).pipe(
       map((data) => {
         const access_token = data.access_token;
         Session.setSession(access_token)
