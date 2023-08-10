@@ -58,7 +58,7 @@ export class TransactionListComponent implements OnInit {
 
   ngOnInit() {
     const currentDay = new Date();
-    const m = currentDay.getMonth();
+    const m = currentDay.getMonth() - 1;
     this.setMonth(String(m).padStart(2, "0"));
     this.findWallets();
     this.findCategories();
