@@ -127,13 +127,27 @@
     </div>
   </div>
 
+  <div *ngIf="showCalcChecked">
+    <div class="divider lg:divider-horizontal"></div>
+    <div class="flex" >
+      <div class="stat">
+        <div class="stat-title">Sum Checked</div>
+        <div class="stat-value text-red-400">
+          {{ calc | currency : "BRL" }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <div class="divider lg:divider-horizontal"></div>
 
   <div class="overflow-x-auto mt-6">
     <table class="table table-zebra w-full">
       <thead>
         <tr>
-          <th></th>
+          <th>#</th>
+          <th>ID</th>
           <th>Description</th>
           <th>Amount</th>
           <th>Paid</th>
@@ -144,7 +158,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of transactions">
+        <tr *ngFor="let item of transactions; let i=index;">
+          <td>
+            <input type="checkbox" value="{{ item.id }}" (change)="handleCheckbox($event, item)" [(ngModel)]="transactions[i].checked"/>
+          </td>
           <th>{{ item.id }}</th>
           <td>{{ item.description }}</td>
           <td>

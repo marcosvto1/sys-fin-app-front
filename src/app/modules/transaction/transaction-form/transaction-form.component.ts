@@ -67,8 +67,8 @@ export class TransactionFormComponent {
       category_id: this.fb.control('', [Validators.required]),
       transaction_type: this.fb.control('output', [Validators.required]),
       transaction_at: this.fb.control(
-        `${new Date().getFullYear()}-${new Date()
-          .getMonth()
+        `${new Date().getFullYear()}-${(new Date()
+          .getMonth() - 1)
           .toString()
           .padStart(2, '0')}-01`,
         [Validators.required]
@@ -76,7 +76,7 @@ export class TransactionFormComponent {
       wallet_id: this.fb.control('', [Validators.required]),
       paid: this.fb.control(false, [Validators.required]),
       month: this.fb.control(
-        new Date().getMonth().toString().padStart(2, '0'),
+        (new Date().getMonth() - 1).toString().padStart(2, '0'),
         [Validators.required]
       ),
     });
@@ -125,6 +125,8 @@ export class TransactionFormComponent {
     this.transactionService.getOne(this.transaction_id).subscribe({
       next: (data) => {
         this.form.patchValue(data);
+
+        console.log(data.transaction_at)
 
         const dt = new Date(data.transaction_at);
 

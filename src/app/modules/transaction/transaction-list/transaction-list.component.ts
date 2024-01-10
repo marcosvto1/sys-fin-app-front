@@ -3,11 +3,14 @@ import * as toastr from 'toastr';
 import { TransactionService } from '../service/transaction.service';
 import { IWallet } from '../../wallet/wallet.interface';
 import { WalletService } from '../../wallet/services/wallet.service';
-import { IFindTransactionOptions, ITransaction } from '../transaction.interface';
+import {
+  IFindTransactionOptions,
+  ITransaction,
+} from '../transaction.interface';
 import { CategoryService } from '../../category/services/category.service';
 import { ICategory } from '../../category/category.interface';
 
-
+type ITransactionChecked = ITransaction & { checked: boolean };
 
 @Component({
   selector: 'app-transaction-list',
@@ -30,57 +33,71 @@ export class TransactionListComponent implements OnInit {
     { id: '11', value: 'DEZEMBRO' },
   ];
   month = {
-    id: "00",
+    id: '00',
     value: 'JANEIRO',
   };
-  years = [
-    "2023",
-    "2024"
-  ]
-  year: string = new Date().getFullYear().toString()
-  transactions: ITransaction[] = [];
+  years = ['2023', '2024'];
+  year: string = new Date().getFullYear().toString();
+  transactions: ITransactionChecked[] = [];
   categories: ICategory[] = [];
-  category: string = "-1"
-  wallets: IWallet[] = []
-  wallet: string = "-1"
+  category: string = '-1';
+  wallets: IWallet[] = [];
+  wallet: string = '-1';
+  transactionsChecks = [];
 
   balanceTotalInput = 0;
-  balanceUnpaidInput = 0
+  balanceUnpaidInput = 0;
   balancePaidInput = 0;
 
   balanceTotalOutput = 0;
   balanceUnpaidOutput = 0;
   balancePaidOutput = 0;
 
-  constructor(private readonly transactionService: TransactionService,
+  showCalcChecked = false;
+  calc = 0;
+
+  constructor(
+    private readonly transactionService: TransactionService,
     private readonly walletsServices: WalletService,
-    private readonly categoriesService: CategoryService) {}
+    private readonly categoriesService: CategoryService
+  ) {}
 
   ngOnInit() {
     const currentDay = new Date();
     const m = currentDay.getMonth() - 1;
-    this.setMonth(String(m).padStart(2, "0"));
+    this.setMonth(String(m).padStart(2, '0'));
     this.findWallets();
     this.findCategories();
     this.findTransactions();
   }
 
+  handleCheckbox(e: any, item: ITransactionChecked) {
+    if (this.transactions.some((e) => e.checked === true)) {
+      this.showCalcChecked = true;
+      this.calc = this.transactions
+        .filter((t) => t.checked === true)
+        .reduce((acc, i) => i.amount + acc, 0);
+    } else {
+      this.showCalcChecked = false;
+    }
+  }
+
   onChangeMonth(value: any) {
     const m = value.target.value;
     this.setMonth(m);
-    this.findTransactions()
+    this.findTransactions();
   }
 
   onChangeYear() {
-    this.findTransactions()
+    this.findTransactions();
   }
 
   onChangeWallet() {
-    this.findTransactions()
+    this.findTransactions();
   }
 
   onChangeCategory() {
-    this.findTransactions()
+    this.findTransactions();
   }
 
   setMonth(m: string) {
@@ -93,23 +110,23 @@ export class TransactionListComponent implements OnInit {
   findWallets() {
     this.walletsServices.getAll().subscribe({
       next: (data) => {
-        this.wallets = data
+        this.wallets = data;
       },
       error: (err) => {
-        toastr.error('Failed to find wallets')
-      }
-    })
+        toastr.error('Failed to find wallets');
+      },
+    });
   }
 
   findCategories() {
     this.categoriesService.getAll().subscribe({
       next: (data) => {
-        this.categories = data
+        this.categories = data;
       },
       error: (err) => {
-        toastr.error('Failed to find categories')
-      }
-    })
+        toastr.error('Failed to find categories');
+      },
+    });
   }
 
   findTransactions() {
@@ -119,14 +136,16 @@ export class TransactionListComponent implements OnInit {
       categoryId: parseInt(this.category) || -1,
       walletId: parseInt(this.wallet) || -1,
       month: String(this.month.id),
-      year: this.year
-    } as IFindTransactionOptions
-
+      year: this.year,
+    } as IFindTransactionOptions;
 
     this.transactionService.getAll(params).subscribe({
       next: (data) => {
         if (data) {
-          this.transactions = data.items;
+          this.transactions = data.items.map((t) => ({
+            ...t,
+            checked: false,
+          }));
           this.setStats();
         }
       },
@@ -137,12 +156,12 @@ export class TransactionListComponent implements OnInit {
   }
 
   setStats() {
-    this.balanceTotalInput = 0
-    this.balanceTotalOutput = 0
-    this.balancePaidInput = 0
-    this.balancePaidOutput = 0
-    this.balanceUnpaidInput = 0
-    this.balanceUnpaidOutput = 0
+    this.balanceTotalInput = 0;
+    this.balanceTotalOutput = 0;
+    this.balancePaidInput = 0;
+    this.balancePaidOutput = 0;
+    this.balanceUnpaidInput = 0;
+    this.balanceUnpaidOutput = 0;
 
     const stats = this.transactions.reduce(
       (acc, item) => {
@@ -170,27 +189,27 @@ export class TransactionListComponent implements OnInit {
         blcPaidInput: 0,
         blcPaidOutput: 0,
         blcUnpaidInput: 0,
-        blcUnpaidOuput: 0
+        blcUnpaidOuput: 0,
       }
     );
 
-    this.balanceTotalInput = stats.blcTotalInput
-    this.balanceTotalOutput = stats.blcTotalOutput
-    this.balancePaidInput = stats.blcPaidInput
-    this.balancePaidOutput = stats.blcPaidOutput
-    this.balanceUnpaidInput = stats.blcUnpaidInput
-    this.balanceUnpaidOutput = stats.blcUnpaidOuput
+    this.balanceTotalInput = stats.blcTotalInput;
+    this.balanceTotalOutput = stats.blcTotalOutput;
+    this.balancePaidInput = stats.blcPaidInput;
+    this.balancePaidOutput = stats.blcPaidOutput;
+    this.balanceUnpaidInput = stats.blcUnpaidInput;
+    this.balanceUnpaidOutput = stats.blcUnpaidOuput;
   }
 
   handleDeleteTransaction(event: any, id: string) {
     this.transactionService.delete(id).subscribe({
       next: () => {
-        toastr.success('transaction removided with success')
-        this.findTransactions()
+        toastr.success('transaction removided with success');
+        this.findTransactions();
       },
       error: () => {
-        toastr.error('failed to remove transaction')
-      }
-    })
+        toastr.error('failed to remove transaction');
+      },
+    });
   }
 }
